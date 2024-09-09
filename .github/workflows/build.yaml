@@ -1,0 +1,85 @@
+name: Convert
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 2 * * *"
+jobs:
+  geosite:
+    name: Convert sing-box geo rule-set to mihomo
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+      - name: "Setup Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: "Install requirements"
+        run: pip install pyyaml
+      - name: "Checkout sing-box geosite rule-set"
+        uses: actions/checkout@v4
+        with:
+          repository: 'ghitori/sing-geosite'
+          ref: 'rule-set'
+          path: 'sing-geosite'
+      - name: "Checkout sing-box geoip rule-set"
+        uses: actions/checkout@v4
+        with:
+          repository: 'ghitori/sing-geoip'
+          ref: 'rule-set'
+          path: 'sing-geoip'
+      - name: "Download sing-box Binary File"
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: 'SagerNet/sing-box'
+          latest: true
+          preRelease: true
+          fileName: 'sing-box-*-linux-amd64.tar.gz'
+      - name: "Download mihomo Binary File"
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: 'MetaCubeX/mihomo'
+          latest: true
+          fileName: 'mihomo-linux-amd64-v*.gz'
+      - name: Convert .srs to .json
+        run: |
+          tar xvf sing-box-*-linux-amd64.tar.gz --strip-components 1
+          bash srs2json.sh
+      - name: Convert sing-box .json to mihomo .yaml
+        run: python3 convert.py
+      - name: Convert .yaml to .mrs
+        run: |
+          gunzip -c mihomo-linux-amd64-v*.gz > mihomo
+          chmod +x mihomo
+          bash yaml2mrs.sh
+      - name: Release mihomo Rule-set
+        run: |
+          set -e -o pipefail
+          mkdir -p release
+          cd ./release
+          git init
+          git config --local user.email "github-action@users.noreply.github.com"
+          git config --local user.name "GitHub Action"
+          git remote add origin https://github-action:${{ secrets.GITHUB_TOKEN }}@github.com/ghitori/mihomo-geo.git
+          git branch -M domain
+          mkdir -p ./mrs ./yaml
+          cp -r ../out/domain/*.mrs ./mrs
+          cp -r ../out/domain/*.yaml ./yaml
+          git add .
+          git commit -m "Release domain Rule-set"
+          git push -f origin domain
+          git branch -M ipcidr
+          rm -r ./*
+          mkdir -p ./mrs ./yaml
+          cp -r ../out/ipcidr/*.mrs ./mrs
+          cp -r ../out/ipcidr/*.yaml ./yaml
+          git add .
+          git commit -m "Release ipcidr Rule-set"
+          git push -f origin ipcidr
+          git branch -M classical
+          rm -r ./*
+          mkdir -p ./yaml
+          cp -r ../out/classical/*.yaml ./yaml
+          git add .
+          git commit -m "Release classical(domain-regex) Rule-set"
+          git push -f origin classical
