@@ -1,0 +1,4 @@
+payload:
+- DOMAIN-REGEX,^cdn-akamai-.+\.gog-services\.com$
+- DOMAIN-REGEX,^gog-cdn-.+\.footprint\.net$
+- DOMAIN-REGEX,^images(-\d)?\.gog-statics\.com$

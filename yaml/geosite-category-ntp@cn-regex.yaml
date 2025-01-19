@@ -1,0 +1,3 @@
+payload:
+- DOMAIN-REGEX,^ntp([1-7])?\.aliyun\.com$
+- DOMAIN-REGEX,^ntp([1-5])?\.tencent\.com$

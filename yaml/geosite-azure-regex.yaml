@@ -1,0 +1,3 @@
+payload:
+- DOMAIN-REGEX,.+\.azchcdn[a-s]\.com$
+- DOMAIN-REGEX,.+\.azure-dns-([1-9]|10)\.cn$

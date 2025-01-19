@@ -1,0 +1,8 @@
+payload:
+- DOMAIN-REGEX,^time(.euro)?.apple.com$
+- DOMAIN-REGEX,^time([1-5])?\.facebook\.com$
+- DOMAIN-REGEX,^time([1-4])?.google.com$
+- DOMAIN-REGEX,^((((ut1-wwv)|(ntp\-(b|d|wwv))|(time(\-(([a-e]\-(g|b))|([a-e]\-wwv)))?))\.nist\.gov)|((ntp-c|ut1-time)|(utcnist(2|3)?))\.colorado\.edu)$
+- DOMAIN-REGEX,^ntp[0-7]\.ntp-servers\.net$
+- DOMAIN-REGEX,^ntp([1-7])?\.aliyun\.com$
+- DOMAIN-REGEX,^ntp([1-5])?\.tencent\.com$

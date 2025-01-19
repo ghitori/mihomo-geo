@@ -1,0 +1,2 @@
+payload:
+- DOMAIN-REGEX,.+\.cdnhwc([1-9]|10)\.(cn|com)$

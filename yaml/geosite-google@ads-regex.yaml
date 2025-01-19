@@ -1,0 +1,2 @@
+payload:
+- DOMAIN-REGEX,^adservice\.google\.([a-z]{2}|com?)(\.[a-z]{2})?$
