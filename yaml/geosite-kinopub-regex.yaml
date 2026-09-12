@@ -1,0 +1,2 @@
+payload:
+- DOMAIN-REGEX,(\w+)-static-[0-9]+\.cdntogo\.net$
