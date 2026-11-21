@@ -1,0 +1,2 @@
+payload:
+- DOMAIN-REGEX,(^|\.)bilibili3(0[1-9]|1[0-2])\.xyz$
